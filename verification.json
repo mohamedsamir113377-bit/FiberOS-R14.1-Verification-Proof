@@ -1,0 +1,150 @@
+{
+  "artifact": "FiberOS R14.1 — Sales Core",
+  "packageVersion": "1.0.0-rc.1+commercial.2026-09-25",
+  "referenceCommit": "dac01a2ef20b37f5262af151bb200479e2e32e75",
+  "generatedAt": "2026-09-30",
+  "verificationSession": {
+    "type": "independent re-verification from the private repository clone at the reference commit",
+    "repository": "mohamedsamir113377-bit/-FiberOS-R14.1-Commercial-Operations-Platform",
+    "branch": "main",
+    "headAtSession": "dac01a2ef20b37f5262af151bb200479e2e32e75",
+    "referenceCommitPresent": true,
+    "date": "2026-09-30"
+  },
+  "environment": {
+    "node": "v24.21.0",
+    "npm": "11.19.0",
+    "redis": "7.0.15",
+    "install": "npm ci — exit 0"
+  },
+  "tests": {
+    "firstRun": {
+      "redisTestUrl": "not set",
+      "exit": 0,
+      "tests": 316,
+      "pass": 315,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 1,
+      "todo": 0,
+      "duration_ms": 6141.916452,
+      "skippedTest": "packages/security/test/redisRateLimit.test.js — 'independent limiter instances share the same Redis token bucket' (skipped only because FIBEROS_REDIS_TEST_URL was unset)"
+    },
+    "secondRun": {
+      "redisTestUrl": "set (live Redis 7.0.15)",
+      "exit": 0,
+      "tests": 316,
+      "pass": 316,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "duration_ms": 5876.384365
+    }
+  },
+  "verifyGate": {
+    "command": "npm run verify",
+    "exit": 0,
+    "gates": {
+      "releaseIntegrity": "PASS",
+      "migrationSequenceAndShaLedger": "PASS — 116/116 contiguous 001-116",
+      "productionConsoleBoundary": "PASS",
+      "architectureBoundary": "PASS — 41 packages",
+      "architectureMap": "PASS",
+      "javascriptSyntax": "PASS",
+      "preDbFinal": "PASS",
+      "rootCauseContracts": "PASS",
+      "npmTest": "PASS — 316/316 (with live Redis)",
+      "formalVerification": "PASS_CORE — 259 checks",
+      "capabilityParity": "PASS — 101 capabilities",
+      "domainNeutrality": "PASS — multi-buyer",
+      "i18nQuality": "PASS — 114 locales / 101 keys / 2 verified / 30 untranslated",
+      "manifestParity": "PASS — manifest regenerated then verified",
+      "commercialReleaseGate": "PASS — ok: true"
+    }
+  },
+  "deterministicBuild": {
+    "builder": "scripts/build-delivery-archive.py",
+    "controls": [
+      "lexicographic entry order",
+      "fixed SOURCE_DATE_EPOCH=1790746233 (2026-09-30T05:30:33Z)",
+      "fixed permissions 0644 files / 0755 dirs",
+      "fixed zlib level 9, no extra fields, no data descriptors",
+      "archive name never included as an entry; MANIFEST_BUILD_STAMP.txt written deterministically"
+    ],
+    "buildA": {
+      "file": "final_A.zip",
+      "bytes": 16342535,
+      "sha256": "6abd1fa870dbf5ddbe7369da08e3b901764a42e55f3a5c98ce42c08d95eb87ff"
+    },
+    "buildB": {
+      "file": "final_B.zip",
+      "bytes": 16342535,
+      "sha256": "6abd1fa870dbf5ddbe7369da08e3b901764a42e55f3a5c98ce42c08d95eb87ff"
+    },
+    "fingerprintMatchesRecordedEvidence": true
+  },
+  "archiveAudit": {
+    "zipEntries": 1339,
+    "directories": 183,
+    "files": 1156,
+    "testzip": "clean — no corrupt entry",
+    "gitDirPresent": false,
+    "nodeModulesPresent": false,
+    "requiredFilesPresent": [
+      "package-lock.json",
+      "LICENSE",
+      ".gitattributes",
+      ".nvmrc",
+      ".env.example",
+      "SALES_PACKAGE_MANIFEST.json",
+      "SALES_PACKAGE_MANIFEST.schema.json",
+      "SBOM.cdx.json",
+      "MANIFEST_BUILD_STAMP.txt",
+      "FINAL_VERIFICATION_STATUS.md",
+      "SECURITY.md",
+      "verification scripts (scripts/)",
+      "docker-compose.sales.yml"
+    ],
+    "migrations": "116 SQL files, 001_extensions.sql through 116_production_deployment_audit.sql",
+    "observabilityPackage": "present (6 files)",
+    "secretScan": "no real token material found; the only 'ghp_' occurrence is the detector regex in scripts/verify-commercial-release.js (pattern definition, not a secret)",
+    "manifestReconciliation": {
+      "manifestFileCount": 1155,
+      "manifestSha256Entries": 1155,
+      "manifestSelfHashPolicy": "SALES_PACKAGE_MANIFEST.json itself = SELF_REFERENTIAL_NOT_HASHED (excluded from its own ledger)",
+      "zipFiles": 1156,
+      "zipOnlyExtraFile": "MANIFEST_BUILD_STAMP.txt (deterministic builder stamp, by design)",
+      "hashMatches": "1154/1155 verified file-by-file; the 1 remaining entry is the manifest's own self-hash placeholder",
+      "resolution": "1150 (local entry count) / 1154 (hashed entries) / 1155 (manifest ledger size) / 1156 (ZIP files incl. build stamp) are four different scopes of the same reconciled tree; all differences are now explained and evidence-backed"
+    }
+  },
+  "sbom": {
+    "format": "CycloneDX",
+    "committedComponents": 132,
+    "regeneratedWith": "@cyclonedx/cyclonedx-npm@4.2.1 --output-reproducible",
+    "regeneratedComponents": 132,
+    "componentNameSetsIdentical": true,
+    "observabilityCoverage": "@fiberos/observability referenced in committed SBOM and present in the workspace tree",
+    "result": "consistent"
+  },
+  "ci": {
+    "runsAtReferenceCommit": [
+      { "id": 36676646280, "workflow": "verify-gate", "conclusion": "success" },
+      { "id": 36676646302, "workflow": "sales-security", "conclusion": "success" }
+    ],
+    "source": "GitHub API query filtered by head_sha=dac01a2… (verified independently in this session)"
+  },
+  "notIndependentlyVerified": [
+    {
+      "item": "SHA-256 601fee6df1bcbca736c5ba8fd96aa6d35cb13b2672c8eb8b24c1703c16d1702e for FiberOS-R14.1-FINAL-2026-09-30.zip",
+      "reason": "that exact file was not available in the verification session; do not present as independently verified"
+    }
+  ],
+  "scopeLimits": {
+    "statement": "Static source verification does not certify buyer-owned PostgreSQL/PostGIS, OIDC/JWKS, TLS/ingress, Redis/high-availability, storage, KMS/HSM, external adapters, backups, or production deployment.",
+    "rateLimiter": "PROCESS_LOCAL only; REDIS throws",
+    "tenantIsolation": "JWT org claims are advisory; enforced isolation = tenant_id + RLS",
+    "i18n": "114 catalogs exist; human verification is 2 verified / 82 machine-draft / 30 untranslated — do not claim 'fully reviewed'"
+  }
+}

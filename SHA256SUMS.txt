@@ -1,0 +1,4 @@
+2979086e23d470cf9ac966c8f0f14a25cb5ef7cec1566bc5478a9b730848bbf8  verification.json
+6abd1fa870dbf5ddbe7369da08e3b901764a42e55f3a5c98ce42c08d95eb87ff  FiberOS-R14.1-Sales-Core-dac01a2-deterministic.zip (rebuilt twice this session, byte-identical)
+8ccc2b4c7d4a92c5e4499ceadda28430fa42ec2516d0d5e7a4118d35132b7842  npm_test_run2.log (316/316, exit 0, Node 24.21.0 + Redis 7.0.15)
+a4e39b8ba4ef88448223911b558e566f2321579b045ac7d7e5a05fe61c4f8a5d  npm_run_verify.log (exit 0, all gates PASS)
