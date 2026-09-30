@@ -1,28 +1,32 @@
 # FiberOS R14.1 — Sales Core: Verification Proof
 
-> **هذه الصفحة للإثبات فقط — Proof-only page.**
-> هذا المستودع **لا يحتوي أي كود مصدري ولا أي أرشيف تسليم**. المنتج نفسه مستودع خاص (private) ولا يمكن تحميله من هنا إطلاقاً.
-> هذا المستودع موجود لغرض واحد: أن يطمئن المشتري إلى أن جميع بوابات التحقق والاختبارات نجحت على الشجرة النهائية المُسلَّمة، ثم يعود إلى موقع البيع ليدفع ويحمل الحزمة.
+> **Proof-only repository.**
+>
+> This repository contains **no source code** and **no delivery archives**.
+> The product lives in a **private** repository and cannot be downloaded from here.
+>
+> Purpose: let a prospective buyer verify that the final delivery tree passed tests and verification gates, then return to the sales site to purchase and receive the package.
 
 ---
 
-## 1) الشجرة المُوثَّقة (Verified tree)
+## 1) Verified tree
 
-| البند | القيمة |
+| Item | Value |
 |---|---|
-| الحزمة | FiberOS R14.1 — Sales Core |
-| الإصدار | `1.0.0-rc.1+commercial.2026-09-25` |
-| الالتزام المرجعي | `dac01a2ef20b37f5262af151bb200479e2e32e75` |
-| تاريخ الالتزام | 2026-09-30 |
-| سلسلة الترحيلات الإنتاجية | `001–116` (متجاورة، مسنودة بـ SHA-256 ledger) |
+| Package | FiberOS R14.1 — Sales Core |
+| Version | `1.0.0-rc.1+commercial.2026-09-25` |
+| Reference commit | `dac01a2ef20b37f5262af151bb200479e2e32e75` |
+| Commit date | 2026-09-30 |
+| Production migration chain | `001–116` (contiguous, SHA-256 ledger backed) |
+| Status | Commercial Release Candidate (RC) |
 
 ---
 
-## 2) نتائج الاختبار الحقيقية (من جلسة التحقق 2026-09-30)
+## 2) Live verification results (session 2026-09-30)
 
-بيئة الجلسة: **Node.js `v24.21.0`** (الإصدار المُعلن في `package.json` و`.nvmrc`)، **Redis `7.0.15`** حي، تثبيت من الـ lockfile عبر `npm ci`.
+Session environment: **Node.js `v24.21.0`** (as declared in `package.json` / `.nvmrc`), **Redis `7.0.15`**, install via `npm ci` from the lockfile.
 
-مخرج `npm test` الحرفي:
+Literal `npm test` summary:
 
 ```
 ℹ tests 316
@@ -35,9 +39,9 @@
 ℹ duration_ms 5690.246808
 ```
 
-**316/316 اختباراً نجح — صفر فشل، صفر تخطّي.**
+**316/316 tests passed — zero failures, zero skips.**
 
-مخرج بوابة `npm run verify` الكاملة (exit code = 0):
+Full `npm run verify` gate (exit code = 0):
 
 ```
 Release integrity:                PASS
@@ -54,20 +58,20 @@ Manifest parity gate:             PASS — 1155 files
 Commercial release gate:          ok: true
 ```
 
-سجل CI الحقيقي على المستودع الخاص (run IDs للتوثيق):
+Private-repo CI run IDs (documentation only; private workflows are not publicly browsable):
 
-| Run ID | Workflow | الالتزام | النتيجة |
+| Run ID | Workflow | Commit | Result |
 |---|---|---|---|
 | `36676646280` | verify-gate | `dac01a2` | **success** |
 | `36676646302` | sales-security | `dac01a2` | **success** |
 
 ---
 
-## 3) البصمة القابلة لإعادة الإنتاج (Reproducible build fingerprint)
+## 3) Reproducible build fingerprint
 
-الحزمة تُبنى الآن ببنّاء حتمي مُرفق داخلها (`scripts/build-delivery-archive.py`): ترتيب إدخالات ثابت، أزمنة مثبّتة من `SOURCE_DATE_EPOCH`، أذونات و`uid/gid` ثابتة، مستوى ضغط ثابت، وبدون أي حقول إضافية.
+The package is built with a deterministic builder (`scripts/build-delivery-archive.py` inside the product tree): stable entry order, timestamps fixed from `SOURCE_DATE_EPOCH`, fixed permissions/`uid`/`gid`, fixed compression level, no extra fields.
 
-بنى الحزمة مرتين متتاليتين من الشجرة نفسها:
+Two consecutive builds from the same tree:
 
 ```
 $ python3 scripts/build-delivery-archive.py --output final_A.zip \
@@ -79,14 +83,14 @@ $ python3 scripts/build-delivery-archive.py --output final_B.zip \
 sha256: 6abd1fa870dbf5ddbe7369da08e3b901764a42e55f3a5c98ce42c08d95eb87ff
 ```
 
-**الهاشان متطابقان تماماً:**
+**Hashes match exactly:**
 
 ```
 6abd1fa870dbf5ddbe7369da08e3b901764a42e55f3a5c98ce42c08d95eb87ff  final_A.zip
 6abd1fa870dbf5ddbe7369da08e3b901764a42e55f3a5c98ce42c08d95eb87ff  final_B.zip
 ```
 
-أي أن إعادة بناء المشتري للحزمة المُسلَّمة ستنتج **نفس البصمة بالبايت**. داخل الأرشيف ملف `MANIFEST_BUILD_STAMP.txt` يوثّق الطابع:
+A buyer who rebuilds the delivered package with the same tool and commit should obtain **the same byte fingerprint**. The archive includes `MANIFEST_BUILD_STAMP.txt`:
 
 ```
 package=FiberOS R14.1 Sales Core
@@ -97,29 +101,36 @@ tree.commit=dac01a2ef20b37f5262af151bb200479e2e32e75
 
 ---
 
-## 4) حدود الصدق (Honesty boundaries)
+## 4) Honesty boundaries
 
-- «صفر أخطاء» تعني هنا: **جميع الاختبارات التزامنية (316/316) وجميع بوابات التحقق الساكنة نجحت** في بيئة التحقق المرجعية — وليست ضماناً خالياً من أي عطل في كل بيئة تشغيل ممكنة.
-- التحقق الساكن لا يُعوّض قبول البيئة الخاصة بالمشتري: PostgreSQL/PostGIS، OIDC/JWKS، TLS/ingress، Redis/HA، التخزين، والنسخ الاحتياطي — كلها مسؤولية المشتري قبل التشغيل الحقيقي (`FINAL_VERIFICATION_STATUS.md` داخل الحزمة).
-- مُقيّد المعدل المدمج هو `PROCESS_LOCAL` وليس مُقيّداً مشتركاً بين مثيلات متعددة.
-- عزل المستأجرين مُفروض على مستوى قاعدة البيانات (`tenant_id` + RLS)؛ ادعاءات JWT التنظيمية استشارية فقط.
+- “Zero failures” means: **all in-session tests (316/316) and static verification gates passed** in the reference verification environment — not a warranty that every possible customer environment is defect-free.
+- Static verification does **not** replace buyer production acceptance: PostgreSQL/PostGIS, OIDC/JWKS, TLS/ingress, Redis/HA, storage, and backups remain the buyer’s responsibility before production use (see `FINAL_VERIFICATION_STATUS.md` inside the paid package).
+- The built-in rate limiter is `PROCESS_LOCAL`, not a shared multi-instance limiter.
+- Tenant isolation is enforced at the database layer (`tenant_id` + RLS); organizational JWT claims are advisory only where documented.
+- Marketing visuals and any interactive demo are **illustrative / simulated** unless stated otherwise in the paid package docs.
+- This is a **source package / RC**, not a hosted SaaS subscription.
 
 ---
 
-## 5) ما لا يوجد هنا
+## 5) What is not in this repository
 
-- ❌ لا كود مصدري.
-- ❌ لا أرشيف تسليم (ZIP).
-- ❌ لا Releases ولا Artifacts.
-- ✅ فقط: سجل الإثبات أعلاه + تعليمات إعادة البناء.
+- No source code
+- No delivery ZIP
+- No GitHub Releases and no downloadable product artifacts
+- Proof record only: this README, `verification.json`, and `SHA256SUMS.txt`
 
-المصدر الكامل موجود في مستودع خاص. بعد الشراء من موقع البيع تستلم حزمة `FiberOS-R14_1-SALES-CORE-rc1` الموقوطة بهذه البصمة، ويمكنك إعادة بنائها بأمر واحد والتحقق من الهاش بنفسك.
+The full source is private. After purchase from the authorized sales channel, you receive the locked Sales Core package bound to the published fingerprint and can rebuild and verify the hash yourself.
 
+---
 
 ## Files in this proof repository
 
-- `README.md` — verification narrative and scope limits.
-- `verification.json` — machine-readable evidence recorded during the independent re-verification session of 2026-09-30 (Node.js 24.21.0, Redis 7.0.15, `npm ci`, `npm test`, `npm run verify`, deterministic build rebuild, archive audit, SBOM regeneration, CI runs at the reference commit).
-- `SHA256SUMS.txt` — fingerprints of the artifacts and logs produced in that session. Entries referencing files that are not committed here (the deterministic ZIP and the raw logs) are fingerprints for offline comparison; the `verification.json` entry can be checked in place with `sha256sum -c SHA256SUMS.txt`.
+| File | Role |
+|---|---|
+| `README.md` | Verification narrative and scope limits (English) |
+| `verification.json` | Machine-readable evidence from the 2026-09-30 re-verification session |
+| `SHA256SUMS.txt` | Fingerprints for offline comparison; verify with `sha256sum -c SHA256SUMS.txt` where applicable |
 
-Reference commit: `dac01a2ef20b37f5262af151bb200479e2e32e75`
+**Reference commit:** `dac01a2ef20b37f5262af151bb200479e2e32e75`
+
+**Commercial terms (sales channel):** Release Candidate · non-exclusive commercial source license · campaign pricing and support window are defined on the seller’s checkout page, not in this proof repo.
