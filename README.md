@@ -114,3 +114,12 @@ tree.commit=dac01a2ef20b37f5262af151bb200479e2e32e75
 - ✅ فقط: سجل الإثبات أعلاه + تعليمات إعادة البناء.
 
 المصدر الكامل موجود في مستودع خاص. بعد الشراء من موقع البيع تستلم حزمة `FiberOS-R14_1-SALES-CORE-rc1` الموقوطة بهذه البصمة، ويمكنك إعادة بنائها بأمر واحد والتحقق من الهاش بنفسك.
+
+
+## Files in this proof repository
+
+- `README.md` — verification narrative and scope limits.
+- `verification.json` — machine-readable evidence recorded during the independent re-verification session of 2026-09-30 (Node.js 24.21.0, Redis 7.0.15, `npm ci`, `npm test`, `npm run verify`, deterministic build rebuild, archive audit, SBOM regeneration, CI runs at the reference commit).
+- `SHA256SUMS.txt` — fingerprints of the artifacts and logs produced in that session. Entries referencing files that are not committed here (the deterministic ZIP and the raw logs) are fingerprints for offline comparison; the `verification.json` entry can be checked in place with `sha256sum -c SHA256SUMS.txt`.
+
+Reference commit: `dac01a2ef20b37f5262af151bb200479e2e32e75`
