@@ -9,6 +9,18 @@
 
 ---
 
+## Buyer links
+
+| Step | URL |
+|------|-----|
+| Live demo (UI preview) | https://fiberos-tpiqgzib.manus.space/ |
+| Enterprise Command | https://fiberos-tpiqgzib.manus.space/ops/enterprise-command.html |
+| Public verification (this repo) | https://github.com/mohamedsamir113377-bit/FiberOS-R14.1-Verification-Proof |
+| Purchase / license | https://mohsamir2.gumroad.com/l/epsmnr |
+
+This proof repository still contains **no source code** and **no delivery ZIP**.
+
+
 ## 1) Verified tree
 
 | Item | Value |
